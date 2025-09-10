@@ -6,7 +6,7 @@ import { cn } from "@/utils/cn";
 export default function Sidebar({ isOpen, onClose }) {
   const location = useLocation();
   
-  const navigation = [
+const navigation = [
     {
       name: "Dashboard",
       href: "/",
@@ -24,6 +24,12 @@ export default function Sidebar({ isOpen, onClose }) {
       href: "/suppliers",
       icon: "Users",
       current: location.pathname === "/suppliers"
+    },
+    {
+      name: "Supplier Contacts",
+      href: "/suppliers/contacts",
+      icon: "Users",
+      current: location.pathname === "/suppliers/contacts"
     },
     {
       name: "Stock Adjustments",

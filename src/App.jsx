@@ -117,10 +117,11 @@ function AppContent() {
         <Route path="/error" element={<ErrorPage />} />
         <Route path="/prompt-password/:appId/:emailAddress/:provider" element={<PromptPassword />} />
         <Route path="/reset-password/:appId/:fields" element={<ResetPassword />} />
-        <Route path="/" element={<Layout />}>
+<Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="products" element={<Products />} />
           <Route path="suppliers" element={<Suppliers />} />
+          <Route path="suppliers/contacts" element={<Suppliers />} />
           <Route path="reports" element={<Reports />} />
           <Route path="stock-adjustments" element={<StockAdjustments />} />
         </Route>
