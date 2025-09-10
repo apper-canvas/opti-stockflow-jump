@@ -1,10 +1,16 @@
 import { useState } from "react";
 import { Outlet } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import Sidebar from "@/components/organisms/Sidebar";
 import Header from "@/components/organisms/Header";
-
 export default function Layout() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { isAuthenticated } = useSelector((state) => state.user);
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
 
   return (
     <div className="h-screen flex bg-slate-50">

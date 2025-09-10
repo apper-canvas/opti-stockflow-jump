@@ -35,7 +35,7 @@ export default function StockAdjustments() {
         productService.getAll()
       ]);
       
-      setMovements(movementsData.sort((a, b) => new Date(b.date) - new Date(a.date)));
+setMovements(movementsData.sort((a, b) => new Date(b.date_c) - new Date(a.date_c)));
       setProducts(productsData);
     } catch (err) {
       setError("Failed to load stock movements");
@@ -51,12 +51,13 @@ export default function StockAdjustments() {
     }
 
     const filtered = movements.filter(movement => {
-      const product = products.find(p => p.Id === movement.productId);
+const productId = movement.product_id_c?.Id || movement.product_id_c;
+      const product = products.find(p => p.Id === productId);
       return (
-        product?.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        product?.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        movement.reason.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        movement.user.toLowerCase().includes(searchTerm.toLowerCase())
+        product?.name_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        product?.sku_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        movement.reason_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        movement.user_c?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     });
     setFilteredMovements(filtered);
@@ -100,7 +101,8 @@ export default function StockAdjustments() {
       ) : (
         <div className="space-y-4">
           {filteredMovements.map((movement) => {
-            const product = products.find(p => p.Id === movement.productId);
+const productId = movement.product_id_c?.Id || movement.product_id_c;
+            const product = products.find(p => p.Id === productId);
             
             return (
               <Card key={movement.Id} className="hover:shadow-lg transition-all duration-200">
@@ -108,12 +110,12 @@ export default function StockAdjustments() {
                   <div className="flex items-center justify-between">
                     <div className="flex items-center gap-4">
                       <div className={`p-3 rounded-lg ${
-                        movement.type === "in" 
-                          ? "bg-success-50 text-success-600" 
+movement.type_c === "in" 
+                          ? "bg-success-50 text-success-600"
                           : "bg-error-50 text-error-600"
                       }`}>
-                        <ApperIcon 
-                          name={movement.type === "in" ? "ArrowUp" : "ArrowDown"} 
+<ApperIcon 
+                          name={movement.type_c === "in" ? "ArrowUp" : "ArrowDown"}
                           size={20} 
                         />
                       </div>
@@ -121,31 +123,31 @@ export default function StockAdjustments() {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-3 mb-1">
                           <h3 className="font-semibold text-slate-900">
-                            {product?.name || "Unknown Product"}
+{product?.name_c || product?.Name || "Unknown Product"}
                           </h3>
-                          <Badge variant={getMovementTypeVariant(movement.type)}>
+<Badge variant={getMovementTypeVariant(movement.type_c)}>
                             {getMovementTypeLabel(movement.type)}
                           </Badge>
                         </div>
                         
                         <div className="flex items-center gap-4 text-sm text-slate-600">
-                          <span>SKU: {product?.sku || "N/A"}</span>
+<span>SKU: {product?.sku_c || "N/A"}</span>
                           <span>•</span>
-                          <span>Reason: {movement.reason}</span>
+                          <span>Reason: {movement.reason_c}</span>
                           <span>•</span>
-                          <span>By: {movement.user}</span>
+                          <span>By: {movement.user_c}</span>
                         </div>
                       </div>
                     </div>
                     
                     <div className="text-right">
                       <p className={`text-lg font-bold ${
-                        movement.type === "in" ? "text-success-600" : "text-error-600"
+movement.type_c === "in" ? "text-success-600" : "text-error-600"
                       }`}>
-                        {movement.type === "in" ? "+" : "-"}{movement.quantity}
+{movement.type_c === "in" ? "+" : "-"}{movement.quantity_c}
                       </p>
                       <p className="text-sm text-slate-500">
-                        {format(new Date(movement.date), "MMM d, yyyy 'at' h:mm a")}
+{format(new Date(movement.date_c), "MMM d, yyyy 'at' h:mm a")}
                       </p>
                     </div>
                   </div>

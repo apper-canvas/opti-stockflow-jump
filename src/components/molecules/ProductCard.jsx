@@ -18,27 +18,27 @@ export default function ProductCard({
     return { variant: "success", label: "In Stock" };
   };
 
-  const stockStatus = getStockStatus(product.quantity, product.minStock);
+const stockStatus = getStockStatus(product.quantity_c, product.min_stock_c);
 
   return (
     <Card className={cn("group hover:shadow-lg transition-all duration-200", className)} {...props}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1 min-w-0">
-            <div className="flex items-center gap-2 mb-2">
-              <h3 className="font-semibold text-slate-900 truncate">{product.name}</h3>
+<div className="flex items-center gap-2 mb-2">
+              <h3 className="font-semibold text-slate-900 truncate">{product.name_c || product.Name}</h3>
               <Badge variant={stockStatus.variant} className="shrink-0">
                 {stockStatus.label}
               </Badge>
             </div>
-            <p className="text-sm text-slate-500 mb-1">SKU: {product.sku}</p>
-            <p className="text-sm text-slate-600 line-clamp-2">{product.description}</p>
+<p className="text-sm text-slate-500 mb-1">SKU: {product.sku_c}</p>
+            <p className="text-sm text-slate-600 line-clamp-2">{product.description_c}</p>
           </div>
-          {product.imageUrl && (
+          {product.image_url_c && (
             <div className="w-16 h-16 bg-slate-100 rounded-lg flex items-center justify-center shrink-0">
               <img 
-                src={product.imageUrl} 
-                alt={product.name}
+                src={product.image_url_c} 
+                alt={product.name_c || product.Name}
                 className="w-full h-full object-cover rounded-lg"
               />
             </div>
@@ -51,13 +51,13 @@ export default function ProductCard({
           <div className="grid grid-cols-2 gap-4 text-sm">
             <div>
               <span className="text-slate-500">Price:</span>
-              <p className="font-semibold text-slate-900">${product.price}</p>
+<p className="font-semibold text-slate-900">${product.price_c}</p>
             </div>
             <div>
               <span className="text-slate-500">Stock:</span>
               <p className={cn(
                 "font-semibold",
-                product.quantity <= product.minStock ? "text-warning-600" : "text-success-600"
+                product.quantity_c <= product.min_stock_c ? "text-warning-600" : "text-success-600"
               )}>
                 {product.quantity} units
               </p>

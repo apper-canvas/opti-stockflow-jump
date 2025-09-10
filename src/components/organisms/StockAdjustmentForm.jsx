@@ -39,7 +39,7 @@ export default function StockAdjustmentForm({ product, isOpen, onClose, onSave }
     }
 
     const adjustmentQuantity = parseInt(formData.quantity);
-    if (formData.type === "out" && adjustmentQuantity > product?.quantity) {
+if (formData.type === "out" && adjustmentQuantity > product?.quantity_c) {
       newErrors.quantity = "Cannot remove more stock than available";
     }
 
@@ -56,8 +56,8 @@ export default function StockAdjustmentForm({ product, isOpen, onClose, onSave }
     try {
       const adjustmentQuantity = parseInt(formData.quantity);
       const movement = {
-        productId: product.Id,
-        type: formData.type,
+product_id_c: product.Id,
+        type_c: formData.type,
         quantity: adjustmentQuantity,
         reason: formData.reason,
         date: new Date().toISOString(),
@@ -65,14 +65,20 @@ export default function StockAdjustmentForm({ product, isOpen, onClose, onSave }
       };
 
       // Create stock movement record
-      await stockMovementService.create(movement);
+await stockMovementService.create({
+        ...movement,
+        quantity_c: adjustmentQuantity,
+        reason_c: formData.reason,
+        date_c: new Date().toISOString(),
+        user_c: "Current User"
+      });
 
       // Update product quantity
       const newQuantity = formData.type === "in" 
-        ? product.quantity + adjustmentQuantity
-        : product.quantity - adjustmentQuantity;
+        ? product.quantity_c + adjustmentQuantity
+        : product.quantity_c - adjustmentQuantity;
 
-      await productService.update(product.Id, { quantity: newQuantity });
+      await productService.update(product.Id, { quantity_c: newQuantity });
 
       toast.success(`Stock ${formData.type === "in" ? "added" : "removed"} successfully`);
       onSave();
@@ -96,9 +102,9 @@ export default function StockAdjustmentForm({ product, isOpen, onClose, onSave }
   const getNewQuantity = () => {
     if (!formData.quantity || !product) return product?.quantity || 0;
     const adjustmentQuantity = parseInt(formData.quantity);
-    return formData.type === "in" 
-      ? product.quantity + adjustmentQuantity
-      : Math.max(0, product.quantity - adjustmentQuantity);
+return formData.type === "in" 
+      ? product.quantity_c + adjustmentQuantity
+      : Math.max(0, product.quantity_c - adjustmentQuantity);
   };
 
   const reasonOptions = [
@@ -125,12 +131,12 @@ export default function StockAdjustmentForm({ product, isOpen, onClose, onSave }
         <div className="bg-slate-50 rounded-lg p-4">
           <div className="flex items-start justify-between gap-4">
             <div className="flex-1">
-              <h4 className="font-semibold text-slate-900 mb-1">{product.name}</h4>
-              <p className="text-sm text-slate-600 mb-2">SKU: {product.sku}</p>
+<h4 className="font-semibold text-slate-900 mb-1">{product.name_c || product.Name}</h4>
+              <p className="text-sm text-slate-600 mb-2">SKU: {product.sku_c}</p>
               <div className="flex items-center gap-2">
                 <span className="text-sm text-slate-500">Current Stock:</span>
-                <Badge variant={product.quantity <= product.minStock ? "warning" : "success"}>
-                  {product.quantity} units
+                <Badge variant={product.quantity_c <= product.min_stock_c ? "warning" : "success"}>
+                  {product.quantity_c} units
                 </Badge>
               </div>
             </div>

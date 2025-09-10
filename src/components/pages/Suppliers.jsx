@@ -36,7 +36,7 @@ export default function Suppliers() {
     try {
       const [suppliersData, productsData] = await Promise.all([
         supplierService.getAll(),
-        productService.getAll()
+productService.getAll()
       ]);
       
       setSuppliers(suppliersData);
@@ -55,9 +55,9 @@ export default function Suppliers() {
     }
 
     const filtered = suppliers.filter(supplier =>
-      supplier.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      supplier.contactPerson.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      supplier.email.toLowerCase().includes(searchTerm.toLowerCase())
+supplier.name_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      supplier.contact_person_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      supplier.email_c?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredSuppliers(filtered);
   };
@@ -68,7 +68,10 @@ export default function Suppliers() {
   };
 
   const handleDelete = async (supplier) => {
-    const supplierProducts = products.filter(p => p.supplierId === supplier.Id);
+const supplierProducts = products.filter(p => {
+      const supplierId = p.supplier_id_c?.Id || p.supplier_id_c;
+      return supplierId === supplier.Id;
+    });
     
     if (supplierProducts.length > 0) {
       toast.error(`Cannot delete supplier. ${supplierProducts.length} products are linked to this supplier.`);
@@ -95,8 +98,11 @@ export default function Suppliers() {
     loadData();
   };
 
-  const getSupplierProductCount = (supplierId) => {
-    return products.filter(product => product.supplierId === supplierId).length;
+const getSupplierProductCount = (supplierId) => {
+    return products.filter(product => {
+      const productSupplierId = product.supplier_id_c?.Id || product.supplier_id_c;
+      return productSupplierId === supplierId;
+    }).length;
   };
 
   if (loading) return <Loading type="cards" />;

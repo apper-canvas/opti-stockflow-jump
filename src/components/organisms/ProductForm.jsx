@@ -32,19 +32,19 @@ export default function ProductForm({ product, isOpen, onClose, onSave }) {
 
   useEffect(() => {
     if (product) {
-      setFormData({
-        sku: product.sku || "",
-        name: product.name || "",
-        description: product.description || "",
-        category: product.category || "",
-        price: product.price?.toString() || "",
-        cost: product.cost?.toString() || "",
-        quantity: product.quantity?.toString() || "",
-        minStock: product.minStock?.toString() || "",
-        maxStock: product.maxStock?.toString() || "",
-        supplierId: product.supplierId?.toString() || "",
-        imageUrl: product.imageUrl || "",
-        isActive: product.isActive !== undefined ? product.isActive : true
+setFormData({
+        sku: product.sku_c || "",
+        name: product.name_c || "",
+        description: product.description_c || "",
+        category: product.category_c || "",
+        price: product.price_c?.toString() || "",
+        cost: product.cost_c?.toString() || "",
+        quantity: product.quantity_c?.toString() || "",
+        minStock: product.min_stock_c?.toString() || "",
+        maxStock: product.max_stock_c?.toString() || "",
+        supplierId: product.supplier_id_c?.Id ? product.supplier_id_c.Id.toString() : product.supplier_id_c?.toString() || "",
+        imageUrl: product.image_url_c || "",
+        isActive: product.is_active_c !== undefined ? product.is_active_c : true
       });
     } else {
       setFormData({
@@ -66,9 +66,9 @@ export default function ProductForm({ product, isOpen, onClose, onSave }) {
   }, [product, isOpen]);
 
   const loadSuppliers = async () => {
-    try {
+try {
       const data = await supplierService.getAll();
-      setSuppliers(data.filter(supplier => supplier.isActive));
+      setSuppliers(data.filter(supplier => supplier.is_active_c));
     } catch (error) {
       console.error("Failed to load suppliers:", error);
     }
@@ -109,7 +109,21 @@ export default function ProductForm({ product, isOpen, onClose, onSave }) {
       };
 
       if (product) {
-        await productService.update(product.Id, productData);
+await productService.update(product.Id, {
+          sku_c: formData.sku,
+          name_c: formData.name,
+          Name: formData.name,
+          description_c: formData.description,
+          category_c: formData.category,
+          price_c: formData.price,
+          cost_c: formData.cost,
+          quantity_c: formData.quantity,
+          min_stock_c: formData.minStock,
+          max_stock_c: formData.maxStock,
+          supplier_id_c: formData.supplierId,
+          image_url_c: formData.imageUrl,
+          is_active_c: formData.isActive
+        });
         toast.success("Product updated successfully");
       } else {
         await productService.create(productData);
@@ -148,9 +162,9 @@ export default function ProductForm({ product, isOpen, onClose, onSave }) {
     { value: "health", label: "Health & Beauty" }
   ];
 
-  const supplierOptions = suppliers.map(supplier => ({
+const supplierOptions = suppliers.map(supplier => ({
     value: supplier.Id.toString(),
-    label: supplier.name
+    label: supplier.name_c || supplier.Name
   }));
 
   return (

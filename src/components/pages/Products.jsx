@@ -38,7 +38,7 @@ export default function Products() {
     
     try {
       const [productsData, suppliersData] = await Promise.all([
-        productService.getAll(),
+productService.getAll(),
         supplierService.getAll()
       ]);
       
@@ -58,9 +58,9 @@ export default function Products() {
     }
 
     const filtered = products.filter(product =>
-      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.sku.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.description.toLowerCase().includes(searchTerm.toLowerCase())
+product.name_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.sku_c?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description_c?.toLowerCase().includes(searchTerm.toLowerCase())
     );
     setFilteredProducts(filtered);
   };
@@ -71,19 +71,19 @@ export default function Products() {
     switch (filter.type) {
       case "category":
         if (filter.value) {
-          filtered = filtered.filter(product => product.category === filter.value);
+filtered = filtered.filter(product => product.category_c === filter.value);
         }
         break;
       case "stock":
         switch (filter.value) {
           case "in-stock":
-            filtered = filtered.filter(product => product.quantity > product.minStock);
+            filtered = filtered.filter(product => product.quantity_c > product.min_stock_c);
             break;
           case "low-stock":
-            filtered = filtered.filter(product => product.quantity <= product.minStock && product.quantity > 0);
+            filtered = filtered.filter(product => product.quantity_c <= product.min_stock_c && product.quantity_c > 0);
             break;
           case "out-of-stock":
-            filtered = filtered.filter(product => product.quantity === 0);
+            filtered = filtered.filter(product => product.quantity_c === 0);
             break;
           default:
             break;
@@ -91,7 +91,8 @@ export default function Products() {
         break;
       case "supplier":
         if (filter.value) {
-          filtered = filtered.filter(product => product.supplierId?.toString() === filter.value);
+          const supplierId = product.supplier_id_c?.Id || product.supplier_id_c;
+          filtered = filtered.filter(product => supplierId?.toString() === filter.value);
         }
         break;
       default:

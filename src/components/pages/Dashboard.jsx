@@ -42,16 +42,16 @@ export default function Dashboard() {
   if (loading) return <Loading type="stats" />;
   if (error) return <Error message={error} onRetry={loadDashboardData} />;
 
-  const activeProducts = products.filter(p => p.isActive);
-  const lowStockProducts = activeProducts.filter(p => p.quantity <= p.minStock);
-  const outOfStockProducts = activeProducts.filter(p => p.quantity === 0);
+const activeProducts = products.filter(p => p.is_active_c);
+  const lowStockProducts = activeProducts.filter(p => p.quantity_c <= p.min_stock_c);
+  const outOfStockProducts = activeProducts.filter(p => p.quantity_c === 0);
   
-  const totalValue = activeProducts.reduce((sum, product) => 
-    sum + (product.quantity * product.cost), 0
+const totalValue = activeProducts.reduce((sum, product) => 
+    sum + (product.quantity_c * product.cost_c), 0
   );
 
   const recentMovements = movements
-    .sort((a, b) => new Date(b.date) - new Date(a.date))
+.sort((a, b) => new Date(b.date_c) - new Date(a.date_c))
     .slice(0, 8);
 
   return (
@@ -120,10 +120,10 @@ export default function Dashboard() {
             ) : (
               <div className="space-y-3">
                 {lowStockProducts.slice(0, 5).map((product) => (
-                  <div key={product.Id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
+<div key={product.Id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                     <div className="flex-1 min-w-0">
-                      <p className="font-medium text-slate-900 truncate">{product.name}</p>
-                      <p className="text-sm text-slate-500">SKU: {product.sku}</p>
+                      <p className="font-medium text-slate-900 truncate">{product.name_c || product.Name}</p>
+                      <p className="text-sm text-slate-500">SKU: {product.sku_c}</p>
                     </div>
                     <div className="text-right">
                       <p className="text-sm font-medium text-warning-600">
@@ -165,35 +165,36 @@ export default function Dashboard() {
             ) : (
               <div className="space-y-3">
                 {recentMovements.map((movement) => {
-                  const product = products.find(p => p.Id === movement.productId);
+const productId = movement.product_id_c?.Id || movement.product_id_c;
+                  const product = products.find(p => p.Id === productId);
                   return (
                     <div key={movement.Id} className="flex items-center justify-between p-3 bg-slate-50 rounded-lg">
                       <div className="flex items-center gap-3">
                         <div className={`p-2 rounded-lg ${
-                          movement.type === "in" 
-                            ? "bg-success-50 text-success-600" 
+movement.type_c === "in" 
+                            ? "bg-success-50 text-success-600"
                             : "bg-error-50 text-error-600"
                         }`}>
-                          <ApperIcon 
-                            name={movement.type === "in" ? "ArrowUp" : "ArrowDown"} 
+<ApperIcon 
+                            name={movement.type_c === "in" ? "ArrowUp" : "ArrowDown"}
                             size={16} 
                           />
                         </div>
                         <div className="flex-1 min-w-0">
                           <p className="font-medium text-slate-900 truncate">
-                            {product?.name || "Unknown Product"}
+{product?.name_c || product?.Name || "Unknown Product"}
                           </p>
-                          <p className="text-sm text-slate-500">{movement.reason}</p>
+                          <p className="text-sm text-slate-500">{movement.reason_c}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <p className={`text-sm font-medium ${
-                          movement.type === "in" ? "text-success-600" : "text-error-600"
+<p className={`text-sm font-medium ${
+                          movement.type_c === "in" ? "text-success-600" : "text-error-600"
                         }`}>
-                          {movement.type === "in" ? "+" : "-"}{movement.quantity}
+                          {movement.type_c === "in" ? "+" : "-"}{movement.quantity_c}
                         </p>
                         <p className="text-xs text-slate-500">
-                          {format(new Date(movement.date), "MMM d")}
+{format(new Date(movement.date_c), "MMM d")}
                         </p>
                       </div>
                     </div>

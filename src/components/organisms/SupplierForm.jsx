@@ -18,15 +18,15 @@ export default function SupplierForm({ supplier, isOpen, onClose, onSave }) {
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState({});
 
-  useEffect(() => {
+useEffect(() => {
     if (supplier) {
       setFormData({
-        name: supplier.name || "",
-        contactPerson: supplier.contactPerson || "",
-        email: supplier.email || "",
-        phone: supplier.phone || "",
-        address: supplier.address || "",
-        isActive: supplier.isActive !== undefined ? supplier.isActive : true
+        name: supplier.name_c || "",
+        contactPerson: supplier.contact_person_c || "",
+        email: supplier.email_c || "",
+        phone: supplier.phone_c || "",
+        address: supplier.address_c || "",
+        isActive: supplier.is_active_c !== undefined ? supplier.is_active_c : true
       });
     } else {
       setFormData({
@@ -65,8 +65,16 @@ export default function SupplierForm({ supplier, isOpen, onClose, onSave }) {
 
     setLoading(true);
     try {
-      if (supplier) {
-        await supplierService.update(supplier.Id, formData);
+if (supplier) {
+        await supplierService.update(supplier.Id, {
+          name_c: formData.name,
+          Name: formData.name,
+          contact_person_c: formData.contactPerson,
+          email_c: formData.email,
+          phone_c: formData.phone,
+          address_c: formData.address,
+          is_active_c: formData.isActive
+        });
         toast.success("Supplier updated successfully");
       } else {
         await supplierService.create(formData);

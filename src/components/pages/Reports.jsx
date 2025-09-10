@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
-import { Card, CardHeader, CardContent, CardTitle } from "@/components/atoms/Card";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/atoms/Card";
+import { format, isAfter, subDays } from "date-fns";
+import ApperIcon from "@/components/ApperIcon";
+import Error from "@/components/ui/Error";
+import Loading from "@/components/ui/Loading";
 import StatCard from "@/components/molecules/StatCard";
 import Badge from "@/components/atoms/Badge";
-import Loading from "@/components/ui/Loading";
-import Error from "@/components/ui/Error";
-import ApperIcon from "@/components/ApperIcon";
-import productService from "@/services/api/productService";
-import supplierService from "@/services/api/supplierService";
+import Products from "@/components/pages/Products";
 import stockMovementService from "@/services/api/stockMovementService";
-import { format, subDays, isAfter } from "date-fns";
+import supplierService from "@/services/api/supplierService";
+import productService from "@/services/api/productService";
 
 export default function Reports() {
   const [products, setProducts] = useState([]);
@@ -45,47 +46,45 @@ export default function Reports() {
   if (loading) return <Loading type="stats" />;
   if (error) return <Error message={error} onRetry={loadData} />;
 
-  const activeProducts = products.filter(p => p.isActive);
-  const lowStockProducts = activeProducts.filter(p => p.quantity <= p.minStock);
-  const outOfStockProducts = activeProducts.filter(p => p.quantity === 0);
-  const overStockProducts = activeProducts.filter(p => p.quantity > p.maxStock);
+const activeProducts = products.filter(p => p.is_active_c);
+  const lowStockProducts = activeProducts.filter(p => p.quantity_c <= p.min_stock_c);
+  const outOfStockProducts = activeProducts.filter(p => p.quantity_c === 0);
+  const overStockProducts = activeProducts.filter(p => p.quantity_c > p.max_stock_c);
   
-  const totalInventoryValue = activeProducts.reduce((sum, product) => 
-    sum + (product.quantity * product.cost), 0
+const totalInventoryValue = activeProducts.reduce((sum, product) => 
+    sum + (product.quantity_c * product.cost_c), 0
   );
 
-  const totalRetailValue = activeProducts.reduce((sum, product) => 
-    sum + (product.quantity * product.price), 0
+const totalRetailValue = activeProducts.reduce((sum, product) => 
+    sum + (product.quantity_c * product.price_c), 0
   );
 
-  const activeSuppliers = suppliers.filter(s => s.isActive);
+const activeSuppliers = suppliers.filter(s => s.is_active_c);
   
   // Recent movements (last 30 days)
   const thirtyDaysAgo = subDays(new Date(), 30);
-  const recentMovements = movements.filter(movement => 
-    isAfter(new Date(movement.date), thirtyDaysAgo)
+const recentMovements = movements.filter(movement => 
+    isAfter(new Date(movement.date_c), thirtyDaysAgo)
   );
 
-  const stockInMovements = recentMovements.filter(m => m.type === "in");
-  const stockOutMovements = recentMovements.filter(m => m.type === "out");
-
-  const totalStockIn = stockInMovements.reduce((sum, m) => sum + m.quantity, 0);
-  const totalStockOut = stockOutMovements.reduce((sum, m) => sum + m.quantity, 0);
-
+const stockInMovements = recentMovements.filter(m => m.type_c === "in");
+const stockOutMovements = recentMovements.filter(m => m.type_c === "out");
+const totalStockIn = stockInMovements.reduce((sum, m) => sum + (m.quantity_c || m.quantity || 0), 0);
+const totalStockOut = stockOutMovements.reduce((sum, m) => sum + (m.quantity_c || m.quantity || 0), 0);
   // Category breakdown
   const categoryStats = {};
-  activeProducts.forEach(product => {
-    if (!categoryStats[product.category]) {
-      categoryStats[product.category] = {
+activeProducts.forEach(product => {
+    if (!categoryStats[product.category_c]) {
+      categoryStats[product.category_c] = {
         count: 0,
         value: 0,
         lowStock: 0
       };
     }
-    categoryStats[product.category].count++;
-    categoryStats[product.category].value += product.quantity * product.cost;
-    if (product.quantity <= product.minStock) {
-      categoryStats[product.category].lowStock++;
+    categoryStats[product.category_c].count++;
+    categoryStats[product.category_c].value += product.quantity_c * product.cost_c;
+    if (product.quantity_c <= product.min_stock_c) {
+      categoryStats[product.category_c].lowStock++;
     }
   });
 
@@ -94,10 +93,10 @@ export default function Reports() {
     .slice(0, 5);
 
   // Top products by value
-  const topProductsByValue = activeProducts
+const topProductsByValue = activeProducts
     .map(product => ({
       ...product,
-      totalValue: product.quantity * product.cost
+      totalValue: product.quantity_c * product.cost_c
     }))
     .sort((a, b) => b.totalValue - a.totalValue)
     .slice(0, 5);
@@ -286,7 +285,7 @@ export default function Reports() {
           <CardContent>
             <div className="space-y-4">
               {topProductsByValue.map((product, index) => (
-                <div key={product.Id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
+<div key={product.Id} className="flex items-center gap-3 p-3 bg-slate-50 rounded-lg">
                   <div className="flex-shrink-0 w-8 h-8 bg-primary-100 rounded-full flex items-center justify-center">
                     <span className="text-sm font-bold text-primary-600">
                       {index + 1}
@@ -296,16 +295,16 @@ export default function Reports() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
                       <p className="font-medium text-slate-900 truncate">
-                        {product.name}
+                        {product.name_c || product.Name}
                       </p>
                       <span className="font-bold text-slate-900">
                         ${product.totalValue.toLocaleString()}
                       </span>
                     </div>
                     <div className="flex items-center gap-2 text-sm text-slate-500">
-                      <span>{product.quantity} units</span>
+                      <span>{product.quantity_c} units</span>
                       <span>×</span>
-                      <span>${product.cost}</span>
+                      <span>${product.cost_c}</span>
                     </div>
                   </div>
                 </div>

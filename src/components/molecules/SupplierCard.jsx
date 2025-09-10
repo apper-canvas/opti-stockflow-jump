@@ -18,9 +18,9 @@ export default function SupplierCard({
         <div className="flex items-start justify-between gap-3">
           <div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-              <h3 className="font-semibold text-slate-900">{supplier.name}</h3>
-              <Badge variant={supplier.isActive ? "success" : "error"}>
-                {supplier.isActive ? "Active" : "Inactive"}
+<h3 className="font-semibold text-slate-900">{supplier.name_c || supplier.Name}</h3>
+              <Badge variant={supplier.is_active_c ? "success" : "error"}>
+                {supplier.is_active_c ? "Active" : "Inactive"}
               </Badge>
             </div>
             <p className="text-sm text-slate-600">{supplier.contactPerson}</p>
@@ -33,15 +33,15 @@ export default function SupplierCard({
           <div className="space-y-2 text-sm">
             <div className="flex items-center gap-2">
               <ApperIcon name="Mail" size={14} className="text-slate-400" />
-              <span className="text-slate-600">{supplier.email}</span>
+<span className="text-slate-600">{supplier.email_c}</span>
             </div>
             <div className="flex items-center gap-2">
               <ApperIcon name="Phone" size={14} className="text-slate-400" />
-              <span className="text-slate-600">{supplier.phone}</span>
+              <span className="text-slate-600">{supplier.phone_c}</span>
             </div>
             <div className="flex items-start gap-2">
               <ApperIcon name="MapPin" size={14} className="text-slate-400 mt-0.5" />
-              <span className="text-slate-600 text-xs leading-relaxed">{supplier.address}</span>
+              <span className="text-slate-600 text-xs leading-relaxed">{supplier.address_c}</span>
             </div>
           </div>
 
