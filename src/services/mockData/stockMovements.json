@@ -1,0 +1,137 @@
+[
+  {
+    "Id": 1,
+    "productId": 1,
+    "type": "in",
+    "quantity": 20,
+    "reason": "purchase",
+    "date": "2024-01-15T09:00:00Z",
+    "user": "Admin User"
+  },
+  {
+    "Id": 2,
+    "productId": 1,
+    "type": "out",
+    "quantity": 5,
+    "reason": "sale",
+    "date": "2024-01-15T14:30:00Z",
+    "user": "Sales Rep"
+  },
+  {
+    "Id": 3,
+    "productId": 2,
+    "type": "in",
+    "quantity": 15,
+    "reason": "purchase",
+    "date": "2024-01-14T10:15:00Z",
+    "user": "Admin User"
+  },
+  {
+    "Id": 4,
+    "productId": 2,
+    "type": "out",
+    "quantity": 7,
+    "reason": "sale",
+    "date": "2024-01-14T16:45:00Z",
+    "user": "Sales Rep"
+  },
+  {
+    "Id": 5,
+    "productId": 3,
+    "type": "in",
+    "quantity": 50,
+    "reason": "purchase",
+    "date": "2024-01-13T08:00:00Z",
+    "user": "Admin User"
+  },
+  {
+    "Id": 6,
+    "productId": 3,
+    "type": "out",
+    "quantity": 5,
+    "reason": "sale",
+    "date": "2024-01-13T12:20:00Z",
+    "user": "Sales Rep"
+  },
+  {
+    "Id": 7,
+    "productId": 4,
+    "type": "in",
+    "quantity": 30,
+    "reason": "purchase",
+    "date": "2024-01-12T09:30:00Z",
+    "user": "Admin User"
+  },
+  {
+    "Id": 8,
+    "productId": 4,
+    "type": "out",
+    "quantity": 30,
+    "reason": "sale",
+    "date": "2024-01-12T17:00:00Z",
+    "user": "Sales Rep"
+  },
+  {
+    "Id": 9,
+    "productId": 5,
+    "type": "in",
+    "quantity": 40,
+    "reason": "purchase",
+    "date": "2024-01-11T11:00:00Z",
+    "user": "Admin User"
+  },
+  {
+    "Id": 10,
+    "productId": 5,
+    "type": "out",
+    "quantity": 5,
+    "reason": "sale",
+    "date": "2024-01-11T15:30:00Z",
+    "user": "Sales Rep"
+  },
+  {
+    "Id": 11,
+    "productId": 6,
+    "type": "in",
+    "quantity": 25,
+    "reason": "purchase",
+    "date": "2024-01-10T08:45:00Z",
+    "user": "Admin User"
+  },
+  {
+    "Id": 12,
+    "productId": 6,
+    "type": "out",
+    "quantity": 7,
+    "reason": "sale",
+    "date": "2024-01-10T14:15:00Z",
+    "user": "Sales Rep"
+  },
+  {
+    "Id": 13,
+    "productId": 9,
+    "type": "in",
+    "quantity": 50,
+    "reason": "purchase",
+    "date": "2024-01-07T10:00:00Z",
+    "user": "Admin User"
+  },
+  {
+    "Id": 14,
+    "productId": 9,
+    "type": "out",
+    "quantity": 45,
+    "reason": "sale",
+    "date": "2024-01-07T16:30:00Z",
+    "user": "Sales Rep"
+  },
+  {
+    "Id": 15,
+    "productId": 2,
+    "type": "out",
+    "quantity": 2,
+    "reason": "damage",
+    "date": "2024-01-06T13:00:00Z",
+    "user": "Warehouse Staff"
+  }
+]
