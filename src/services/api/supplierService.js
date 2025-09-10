@@ -207,5 +207,3 @@ class SupplierService {
 }
 
 export default new SupplierService();
-
-export default new SupplierService();

@@ -91,7 +91,7 @@ filtered = filtered.filter(product => product.category_c === filter.value);
         break;
       case "supplier":
         if (filter.value) {
-          const supplierId = product.supplier_id_c?.Id || product.supplier_id_c;
+const supplierId = selectedProduct.supplier_id_c?.Id || selectedProduct.supplier_id_c;
           filtered = filtered.filter(product => supplierId?.toString() === filter.value);
         }
         break;

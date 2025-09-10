@@ -207,5 +207,3 @@ class StockMovementService {
 }
 
 export default new StockMovementService();
-
-export default new StockMovementService();
