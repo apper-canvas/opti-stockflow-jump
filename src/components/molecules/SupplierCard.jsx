@@ -16,14 +16,14 @@ export default function SupplierCard({
     <Card className={cn("group hover:shadow-lg transition-all duration-200", className)} {...props}>
       <CardHeader className="pb-3">
         <div className="flex items-start justify-between gap-3">
-          <div className="flex-1">
+<div className="flex-1">
             <div className="flex items-center gap-2 mb-2">
-<h3 className="font-semibold text-slate-900">{supplier.name_c || supplier.Name}</h3>
+              <h3 className="font-semibold text-slate-900">{supplier.name_c || supplier.Name}</h3>
               <Badge variant={supplier.is_active_c ? "success" : "error"}>
                 {supplier.is_active_c ? "Active" : "Inactive"}
               </Badge>
             </div>
-            <p className="text-sm text-slate-600">{supplier.contactPerson}</p>
+            <p className="text-sm text-slate-600">{supplier.contact_person_c}</p>
           </div>
         </div>
       </CardHeader>
@@ -31,9 +31,9 @@ export default function SupplierCard({
       <CardContent className="pt-0">
         <div className="space-y-4">
           <div className="space-y-2 text-sm">
-            <div className="flex items-center gap-2">
+<div className="flex items-center gap-2">
               <ApperIcon name="Mail" size={14} className="text-slate-400" />
-<span className="text-slate-600">{supplier.email_c}</span>
+              <span className="text-slate-600">{supplier.email_c}</span>
             </div>
             <div className="flex items-center gap-2">
               <ApperIcon name="Phone" size={14} className="text-slate-400" />
