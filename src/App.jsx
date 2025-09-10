@@ -15,7 +15,7 @@ import Dashboard from "@/components/pages/Dashboard";
 import StockAdjustments from "@/components/pages/StockAdjustments";
 import Products from "@/components/pages/Products";
 import Reports from "@/components/pages/Reports";
-
+import SupplierContacts from "@/components/pages/SupplierContacts";
 export const AuthContext = createContext(null);
 
 function AppContent() {
@@ -120,8 +120,8 @@ function AppContent() {
 <Route path="/" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="products" element={<Products />} />
-          <Route path="suppliers" element={<Suppliers />} />
-          <Route path="suppliers/contacts" element={<Suppliers />} />
+<Route path="suppliers" element={<Suppliers />} />
+          <Route path="suppliers/contacts" element={<SupplierContacts />} />
           <Route path="reports" element={<Reports />} />
           <Route path="stock-adjustments" element={<StockAdjustments />} />
         </Route>
